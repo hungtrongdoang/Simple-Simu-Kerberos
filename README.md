@@ -4,7 +4,7 @@
 	- For Mac OS X: developer.apple.com
 * NetBeans IDE 8.2 
 
-# This project will simply display the communicate messages between Client and Server using Kerberos protocol. To create this program, you will:
+# This project will simply display the communicate messages between Client and Server using Kerberos protocol. To run this:
 * Clone this project with git bash: git clone "https://github.com/hungtrongdoang/Simple-Simu-Kerberos.git" 
 
 * When you open this project, you need an environment in which to build and run this application. You need to set the environment variables.
