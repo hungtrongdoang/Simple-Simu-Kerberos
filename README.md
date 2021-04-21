@@ -8,6 +8,7 @@
 * Clone this project with git bash: git clone "https://github.com/hungtrongdoang/Simple-Simu-Kerberos.git" 
 
 * When you open this project, you need an environment in which to build and run this application. You need to set the environment variables.
+With my pc: 
 
 		JAVA_HOME : C:\Program Files\Java\jdk1.8.0_11
 
@@ -21,7 +22,8 @@
 
 
 * Compile the source file: Client.java; Server1.java into a .class file
-	The IDE invokes the Java programming language compiler (javac), which takes your source file and translates its text into instructions that the Java virtual machine can understand. The instructions contained within this file are known as bytecodes. The IDE invokes the Java application launcher tool (java), which uses the Java virtual machine to run your application.
+
+		The IDE invokes the Java programming language compiler (javac), which takes your source file and translates its text into instructions that the Java virtual machine can understand. The instructions contained within this file are known as bytecodes. The IDE invokes the Java application launcher tool (java), which uses the Java virtual machine to run your application.
 
 * Run Client.java to open session lasts as long as Server1.java or Server2.java runs (Accept new connection will from 127.0.0.1).
 
