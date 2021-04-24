@@ -31,4 +31,6 @@ With my pc:
 
 * Run Server1.java to receive the message from Client and check the availability of ticket.
 
+* To run the code, you first run Client.java to start the socket connection. Then, run Server1.java (which serves as both AS and TGS) which will display the necessary information like plaintext, ticket, ticket-validation,.. While Server 1’s process is completed, you can run Server2.java (which serves as V) which will display the final part of the program.
+
    
