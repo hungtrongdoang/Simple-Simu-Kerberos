@@ -27,10 +27,6 @@ With my pc:
 
 		The IDE invokes the Java programming language compiler (javac), which takes your source file and translates its text into instructions that the Java virtual machine can understand. The instructions contained within this file are known as bytecodes. The IDE invokes the Java application launcher tool (java), which uses the Java virtual machine to run your application.
 
-* Run Client.java to open session lasts as long as Server1.java or Server2.java runs (Accept new connection will from 127.0.0.1).
-
-* Run Server1.java to receive the message from Client and check the availability of ticket.
-
-* To run the code, you first run Client.java to start the socket connection. Then, run Server1.java (which serves as both AS and TGS) which will display the necessary information like plaintext, ticket, ticket-validation,.. While Server 1’s process is completed, you can run Server2.java (which serves as V) which will display the final part of the program.
+* First, you need to run Client.java to start the socket connection. Then, run Server1.java (which serves as both AS and TGS) which will display the necessary information like plaintext, ticket, ticket-validation,.. While Server 1’s process is completed, you can run Server2.java (which serves as V) which will display the final part of the program.
 
    
