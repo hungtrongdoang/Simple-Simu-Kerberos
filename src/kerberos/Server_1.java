@@ -40,7 +40,7 @@ public class Server_1 {
         
         BufferedReader clientMsg = new BufferedReader(new InputStreamReader(s.getInputStream()));
         String recvMsg = clientMsg.readLine();
-        System.out.println("Received message: " + recvMsg);
+        System.out.println("Received message : " + recvMsg + "\n\n\n\n");
         
         Scanner get_key_c = new Scanner(new File("KEY_C.txt"));
         String read_key_c = get_key_c.next();
@@ -60,8 +60,8 @@ public class Server_1 {
             byte []key1 = Base64.getDecoder().decode(read_key_c); //convert string to secret key variable
             KEY_C = new SecretKeySpec(key1, 0, key1.length, "DES"); //initialize secret key variable
             
-            byte []key2 = Base64.getDecoder().decode(read_key_tgs); //convert string to secret key variable
-            KEY_TGS = new SecretKeySpec(key2, 0, key2.length, "DES"); //initialize secret key variable
+            byte []key2 = Base64.getDecoder().decode(read_key_tgs); 
+            KEY_TGS = new SecretKeySpec(key2, 0, key2.length, "DES"); 
         }catch(Exception e){
             System.out.println(e);
         }
@@ -92,7 +92,7 @@ public class Server_1 {
         BufferedReader clientMsg2 = new BufferedReader(new InputStreamReader(s.getInputStream()));
         String recvCiphertext = clientMsg2.readLine();
         System.out.println();
-        System.out.println("Received message: " + recvCiphertext);
+        System.out.println("Received message: " + recvCiphertext);//(Ciphertext)
         checkValidity(); //check validity of TGS tickets
                 
         //read from shared KEY_V file
@@ -120,7 +120,7 @@ public class Server_1 {
         String ticket_v = encryption(KEY_V, secConCat); //initialize ticket_v
         System.out.println();
         System.out.println("Ticket (V) is: " + ticket_v); //print ticket_v
-        
+        //System.out.println("Ticket (TGS) is: " + ticket_tgs);
         //get length of ticket_v and print to new file
         PrintStream ticket_v_len;
         try{
@@ -161,9 +161,9 @@ public class Server_1 {
     //method checks if the TGS ticket did not expire
     public static void checkValidity(){
         if((Instant.now().getEpochSecond() - TS_2) < lifetime_2)
-            System.out.println("Ticket is valid.");
+            System.out.println("Kiểm tra tính hợp lệ: Ticket is valid.");
         else
-            System.out.println("Ticket is not valid.");
+            System.out.println("Kiểm tra tính hợp lệ: Ticket is not valid.");
     }
     
 }
