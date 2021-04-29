@@ -10,7 +10,7 @@
 		git clone "https://github.com/hungtrongdoang/Simple-Simu-Kerberos.git" 
 
 * When you open this project, you need an environment in which to build and run this application. You need to set the environment variables.
-With my pc: 
+
 
 		JAVA_HOME : C:\Program Files\Java\jdk1.8.0_11
 
