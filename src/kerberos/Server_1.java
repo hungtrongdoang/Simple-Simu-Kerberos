@@ -52,8 +52,8 @@ public class Server_1 {
         PrintStream key_c_tgs_file;
         String write_key_c_tgs = "";
         try{
-            KEY_C_TGS = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method to construct DES key
-            write_key_c_tgs = Base64.getEncoder().encodeToString(KEY_C_TGS.getEncoded()); //convert from secret key variable to string
+            KEY_C_TGS = KeyGenerator.getInstance("DES").generateKey(); 
+            write_key_c_tgs = Base64.getEncoder().encodeToString(KEY_C_TGS.getEncoded()); 
             key_c_tgs_file = new PrintStream(new File("KEY_C_TGS.txt")); //make new text file to hold key string
             key_c_tgs_file.println(write_key_c_tgs); //print key to file
             
@@ -103,9 +103,9 @@ public class Server_1 {
         PrintStream key_c_v_file;
         String write_key_c_v = "";
         try{
-            KEY_C_V = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method to construct DES key
-            write_key_c_v = Base64.getEncoder().encodeToString(KEY_C_V.getEncoded()); //convert from secret key variable to string
-            key_c_v_file = new PrintStream(new File("KEY_C_V.txt")); //make new text file to hold key string
+            KEY_C_V = KeyGenerator.getInstance("DES").generateKey(); 
+            write_key_c_v = Base64.getEncoder().encodeToString(KEY_C_V.getEncoded()); 
+            key_c_v_file = new PrintStream(new File("KEY_C_V.txt")); 
             key_c_v_file.println(write_key_c_v); //print key to file
             
             byte []key1 = Base64.getDecoder().decode(read_key_v); //convert string to secret key variable
@@ -146,8 +146,8 @@ public class Server_1 {
     public static String encryption(SecretKey key, String combinedText){        
         try{
             //Ecrypt concatenaetd string using DES
-            encrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); //have Cipher variable encrypt using DES algorithm
-            encrypt.init(Cipher.ENCRYPT_MODE, key); //initialized Cipher variable to encrypt mode with secret key as parameter
+            encrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); 
+            encrypt.init(Cipher.ENCRYPT_MODE, key); 
             byte []text = combinedText.getBytes();
             byte []ciphertext = encrypt.doFinal(text); //ecrypt text
             //System.out.println("Cyphertext is: " + DatatypeConverter.printHexBinary(ciphertext)); //convert from bytes to Hex format
