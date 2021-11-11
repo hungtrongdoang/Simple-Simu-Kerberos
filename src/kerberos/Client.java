@@ -44,9 +44,9 @@ public class Client {
         try{
             //khởi tạo khóa và ghi vào các file
             
-            KEY_C = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method to construct DES key
-            write_key_c = Base64.getEncoder().encodeToString(KEY_C.getEncoded()); //convert from secret key variable to string
-            key_c_file = new PrintStream(new File("KEY_C.txt")); //make new text file to hold key string
+            KEY_C = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method đến DES key
+            write_key_c = Base64.getEncoder().encodeToString(KEY_C.getEncoded()); //convert secretkey -> string
+            key_c_file = new PrintStream(new File("KEY_C.txt")); //file key string
             key_c_file.println(write_key_c); //print key to file
             
             KEY_TGS = KeyGenerator.getInstance("DES").generateKey();
@@ -54,7 +54,7 @@ public class Client {
             key_tgs_file = new PrintStream(new File("KEY_TGS.txt")); 
             key_tgs_file.println(write_key_tgs); //print key to file
             
-            KEY_V = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method to construct DES key
+            KEY_V = KeyGenerator.getInstance("DES").generateKey(); //call Key Generator method đến DES key
             write_key_v = Base64.getEncoder().encodeToString(KEY_V.getEncoded()); 
             key_v_file = new PrintStream(new File("KEY_V.txt")); 
             key_v_file.println(write_key_v); //print key to file
@@ -71,16 +71,14 @@ public class Client {
         System.out.println("[CLIENT] Accept new connection from 127.0.0.1");
         PrintWriter output = new PrintWriter(client.getOutputStream(), true);
         
-        String sentMsg = ID_C.concat(ID_TGS.concat(String.valueOf(TS))); //concatenate 
-        output.println(sentMsg); //send concatenation to AS (Server_1)
+        String sentMsg = ID_C.concat(ID_TGS.concat(String.valueOf(TS))); //concat
+        output.println(sentMsg); //send concat đến AS(Server_1)
         
-        //read ciphertext from AS (Server_1)
+        //ciphertext from AS (Server_1)
         BufferedReader AS_response = new BufferedReader(new InputStreamReader(client.getInputStream()));
         String read_AS_response = AS_response.readLine();
         
-        //System.out.println("Ciphertext is:(read_AS_response) " + read_AS_response);
-        
-        //the ciphertext, in hex, must be converted to bytes
+        //the ciphertext hex -> byte
         byte[] recvText = DatatypeConverter.parseHexBinary(read_AS_response);
         
         String plaintext = decryption(KEY_C, recvText);
@@ -101,36 +99,34 @@ public class Client {
             System.out.println(e);
         }
         
-        //prepare message to send to TGS ( Server_1)
+        //message -> TGS ( Server_1)
         String secConCat = ID_C.concat(AD_C.concat(String.valueOf(TS_3))); //concatenate variable
         
-        //initialize C_TGS key by reading from shared key file
+        //C_TGS key tạo bằng shared file
         Scanner get_key_c_tgs; //to get file
         String read_key_c_tgs; //to read from files
         try{
-            get_key_c_tgs = new Scanner(new File("KEY_C_TGS.txt")); //find file containing key
+            get_key_c_tgs = new Scanner(new File("KEY_C_TGS.txt")); //find file concat key
             read_key_c_tgs = get_key_c_tgs.next(); //read from file
-            byte []key = Base64.getDecoder().decode(read_key_c_tgs); //convert string to secret key variable
+            byte []key = Base64.getDecoder().decode(read_key_c_tgs); //convert string to secret key
             KEY_C_TGS = new SecretKeySpec(key, 0, key.length, "DES"); //initialize secret key variable
         }catch(Exception e){
             System.out.println(e);
         }
         
-        String Authenticator = encryption(KEY_C_TGS, secConCat); //initialize Authenticator with C_TGS key and concatenation
-        String message = ID_V.concat(get_ticket_c.concat(Authenticator)); //further concatenation
-        output.println(message); //send concatenation to TGS i.e. Server_1
+        String Authenticator = encryption(KEY_C_TGS, secConCat); //initialize Authenticator C_TGS key and concat
+        String message = ID_V.concat(get_ticket_c.concat(Authenticator)); //nối thêm
+        output.println(message); //send concat to TGS i.e. Server_1
         
-        //read ciphertext from TGS (Server_1)
+        // ciphertext <-- TGS (Server_1)
         BufferedReader TGS_response = new BufferedReader(new InputStreamReader(client.getInputStream()));
         String read_TGS_response = TGS_response.readLine();
         
-        //System.out.println("Received ciphertext is: " + read_TGS_response); (TGS_response) 
-        
-        //the ciphertext, in hex, must be converted to bytes
+        //ciphertext in hex
         byte[] recvText_2 = DatatypeConverter.parseHexBinary(read_TGS_response);
         String plaintext_2 = decryption(KEY_C_TGS, recvText_2);
         
-        //to get length of ticket_v
+        //length ticket_v
         int read_ticket_v_len;
         Scanner get_ticket_v_len;
         String get_ticket_v = "";
@@ -141,8 +137,8 @@ public class Client {
             
             get_ticket_v = plaintext_2.substring(plaintext_2.length()-(read_ticket_v_len), plaintext_2.length()); //khởi tạo ticket_v string 
             System.out.println();
-            System.out.println("Received plaintext is: " + plaintext_2.substring(0, plaintext_2.length()-read_ticket_v_len)); //print plaintext
-            System.out.println("Ticket (V) is: " + get_ticket_v); //print ticket_v
+            System.out.println("Received plaintext is: " + plaintext_2.substring(0, plaintext_2.length()-read_ticket_v_len)); // plaintext
+            System.out.println("Ticket (V) is: " + get_ticket_v); // ticket_v
         }catch(Exception e){
             System.out.println(e);
         }
@@ -151,23 +147,23 @@ public class Client {
         Socket client2 = listener.accept(); //client được kết nối server2
         PrintWriter output2 = new PrintWriter(client2.getOutputStream(), true);
 
-        String frthConCat = get_ticket_v.concat(Authenticator); //make fourth concatenation
+        String frthConCat = get_ticket_v.concat(Authenticator); //nối 4 chuỗi concat
         
         output2.println(frthConCat); //send concatenation to V (Server_2)
         
-        //read ciphertext from V (Server_1)
+        //read ciphertext từ V (Server_1)
         BufferedReader V_response = new BufferedReader(new InputStreamReader(client2.getInputStream()));
         String read_V_response = V_response.readLine();
         System.out.println("Ciphertext is: " + read_V_response);
         
-        //khởi C_V key bằng cách xem database
+        //khởi tạo C_V key bằng cách xem database
         Scanner get_key_c_v; //to get file
         String read_key_c_v; //to read from files
         try{
-            get_key_c_v = new Scanner(new File("KEY_C_V.txt")); //find file containing key
+            get_key_c_v = new Scanner(new File("KEY_C_V.txt")); // file concat key
             read_key_c_v = get_key_c_v.next(); //read from file
-            byte []key = Base64.getDecoder().decode(read_key_c_v); //convert string to secret key variable
-            KEY_C_V = new SecretKeySpec(key, 0, key.length, "DES"); //initialize secret key variable
+            byte []key = Base64.getDecoder().decode(read_key_c_v); //string -> secret key
+            KEY_C_V = new SecretKeySpec(key, 0, key.length, "DES"); //initialize secret key
         }catch(Exception e){
             System.out.println(e);
         }
@@ -187,8 +183,8 @@ public class Client {
     //decryption method
     public static String decryption(SecretKey key, byte enMsg[]){
         try{
-            decrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); //have Cipher variable encrypt using DES algorithm
-            decrypt.init(Cipher.DECRYPT_MODE, key); //initialized Cipher variable to encrypt mode with secret key as parameter
+            decrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); // Cipher variable encrypt DES 
+            decrypt.init(Cipher.DECRYPT_MODE, key); //initialized Cipher encrypt with secret key
             byte []deMsg = decrypt.doFinal(enMsg); //ecrypt text
             String oriMsg = new String(deMsg);
             return oriMsg;
@@ -202,8 +198,8 @@ public class Client {
     public static String encryption(SecretKey key, String combinedText){        
         try{
             //Ecrypt concatenaetd string using DES
-            encrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); //have Cipher variable encrypt using DES algorithm
-            encrypt.init(Cipher.ENCRYPT_MODE, key); //initialized Cipher variable to encrypt mode with secret key as parameter
+            encrypt = Cipher.getInstance("DES/ECB/PKCS5Padding"); //Cipher encrypt ( DES algorithm)
+            encrypt.init(Cipher.ENCRYPT_MODE, key); //initialized Cipher encrypt + secret key
             byte []text = combinedText.getBytes();
             byte []ciphertext = encrypt.doFinal(text); //ecrypt text
             //System.out.println("Cyphertext is: " + DatatypeConverter.printHexBinary(ciphertext)); //convert from bytes to Hex format
